@@ -1,0 +1,283 @@
+<UserControl x:Class="Composer.Presentation.Layers.DesignLayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:layers="using:Composer.Presentation.Layers"
+             xmlns:local="using:Composer.Presentation"
+             xmlns:mvux="using:Uno.Extensions.Reactive.UI">
+
+  <UserControl.Resources>
+    <local:HexToBrushConverter x:Key="HexToBrush" />
+  </UserControl.Resources>
+
+  <StackPanel Spacing="0">
+    <TextBlock Style="{StaticResource RecapText}"
+               Text="↳ Pages bind State (MVUX), Services consume HTTP and Storage."
+               Margin="0,0,0,18" />
+
+    <Grid Margin="0,0,0,24">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <Ellipse Width="6" Height="6" Fill="{ThemeResource ActionBrush}" VerticalAlignment="Center" />
+        <TextBlock Style="{StaticResource EyebrowText}" Text="04 · DESIGN SYSTEM" />
+      </StackPanel>
+      <TextBlock Grid.Column="1"
+                 Style="{StaticResource EyebrowText}"
+                 Foreground="{ThemeResource Ink4Brush}"
+                 Text="04 / 08" />
+    </Grid>
+
+    <TextBlock Style="{StaticResource DisplaySmallText}"
+               Text="How should it feel?"
+               Margin="0,0,0,12" />
+
+    <TextBlock Style="{StaticResource BodyLargeText}"
+               Foreground="{ThemeResource Ink3Brush}"
+               TextWrapping="Wrap"
+               Text="Tokens, type scale on real sample copy, and the ColorPaletteOverride.xaml the agent will write."
+               Margin="0,0,0,10" />
+
+    <Border Background="{ThemeResource PanelBrush}"
+            BorderBrush="{ThemeResource HairlineBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="12"
+            Margin="0,0,0,28">
+      <StackPanel Spacing="4">
+        <TextBlock Style="{StaticResource EyebrowTinyText}" Text="REFERENCE INPUT" />
+        <TextBlock x:Name="ReferenceSourceText"
+                   Style="{StaticResource BodySmallText}"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   TextWrapping="Wrap" />
+      </StackPanel>
+    </Border>
+
+    <Grid Margin="0,0,0,16">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <TextBlock Style="{StaticResource MonoLabelText}" Text="design-tokens.xaml" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink4Brush}" Text="·" />
+        <TextBlock Style="{StaticResource EyebrowText}" Text="EDITING" />
+      </StackPanel>
+    </Grid>
+
+    <Border BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,1,0,0" Margin="0,0,0,18" />
+
+    <!-- Material override palette — one row per token in ColorPaletteOverride.xaml -->
+    <mvux:FeedView Source="{Binding DesignSwatches}">
+      <mvux:FeedView.ValueTemplate>
+        <DataTemplate>
+          <ItemsControl ItemsSource="{Binding Data}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Grid Padding="0,10" BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,0,0,1">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="34" />
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                  </Grid.ColumnDefinitions>
+                  <Border Width="20" Height="20" CornerRadius="4"
+                          BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="1"
+                          VerticalAlignment="Center"
+                          Background="{Binding Hex, Converter={StaticResource HexToBrush}}" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                    <TextBlock Style="{StaticResource LabelLargeText}" Text="{Binding Name}" />
+                    <TextBlock Style="{StaticResource EyebrowTinyText}"
+                               Foreground="{ThemeResource Ink4Brush}"
+                               Text="{Binding TokenKey}" />
+                  </StackPanel>
+                  <TextBlock Grid.Column="2" Style="{StaticResource MonoBodyText}"
+                             VerticalAlignment="Center" Text="{Binding Hex}" />
+                  <TextBlock Grid.Column="3" Style="{StaticResource BodySmallText}"
+                             Foreground="{ThemeResource Ink3Brush}"
+                             VerticalAlignment="Center" HorizontalAlignment="Right"
+                             Text="{Binding Description}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </DataTemplate>
+      </mvux:FeedView.ValueTemplate>
+    </mvux:FeedView>
+
+    <!-- Type scale -->
+    <TextBlock Style="{StaticResource EyebrowText}" Text="TYPE SCALE" Margin="0,28,0,12" />
+    <Border BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+      <StackPanel Spacing="14">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Text="DISPLAY 26" VerticalAlignment="Center" />
+          <TextBlock Grid.Column="1" Style="{StaticResource DisplaySmallText}" Text="Today's schedule" />
+        </Grid>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Text="HEADING 15" VerticalAlignment="Center" />
+          <TextBlock x:Name="SampleHeading" Grid.Column="1" Style="{StaticResource TitleMediumText}" />
+        </Grid>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Text="BODY 13" VerticalAlignment="Center" />
+          <TextBlock x:Name="SampleBody" Grid.Column="1" Style="{StaticResource BodyMediumText}" />
+        </Grid>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Text="CAPTION 10" VerticalAlignment="Center" />
+          <TextBlock Grid.Column="1" Style="{StaticResource EyebrowText}" Text="LAST UPDATED 14:22" />
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <!-- Component gallery -->
+    <TextBlock Style="{StaticResource EyebrowText}" Text="COMPONENTS" Margin="0,28,0,12" />
+    <TextBlock x:Name="UnoComponentsText"
+               Style="{StaticResource BodySmallText}"
+               Foreground="{ThemeResource Ink3Brush}"
+               TextWrapping="Wrap"
+               Margin="0,0,0,12" />
+    <StackPanel Spacing="0" Margin="0,0,0,16">
+      <Grid Padding="0,9" BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,0,0,1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="170" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="utu:AutoLayout" />
+        <TextBlock Grid.Column="1" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" TextWrapping="Wrap"
+                   Text="Page rhythm, form stacks, and responsive spacing." />
+      </Grid>
+      <Grid Padding="0,9" BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,0,0,1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="170" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="ItemsRepeater" />
+        <TextBlock x:Name="RepeaterRecommendationText" Grid.Column="1" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" TextWrapping="Wrap" />
+      </Grid>
+      <Grid Padding="0,9" BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,0,0,1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="170" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Toolkit buttons" />
+        <TextBlock x:Name="ButtonRecommendationText" Grid.Column="1" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" TextWrapping="Wrap" />
+      </Grid>
+      <Grid Padding="0,9" BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,0,0,1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="170" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="InfoBar" />
+        <TextBlock Grid.Column="1" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" TextWrapping="Wrap"
+                   Text="Offline, sync, validation, and error recovery states." />
+      </Grid>
+      <Grid Padding="0,9" BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,0,0,1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="170" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="NavigationView / TabBar" />
+        <TextBlock Grid.Column="1" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" TextWrapping="Wrap"
+                   Text="Route shell, mode switching, and work queues." />
+      </Grid>
+      <Grid Padding="0,9">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="170" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Chips / segments" />
+        <TextBlock Grid.Column="1" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" TextWrapping="Wrap"
+                   Text="Filters, state toggles, and compact selections." />
+      </Grid>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Spacing="14">
+      <Border Background="{ThemeResource NotepadSurfaceBrush}"
+              BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="1"
+              CornerRadius="8" Padding="14" Width="220">
+        <StackPanel Spacing="8">
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Text="PRIMARY BUTTON" />
+          <Button x:Name="SamplePrimaryButton" Style="{StaticResource AccentActionButtonStyle}" />
+        </StackPanel>
+      </Border>
+      <Border Background="{ThemeResource NotepadSurfaceBrush}"
+              BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="1"
+              CornerRadius="8" Padding="14" Width="240">
+        <StackPanel Spacing="8">
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Text="TABBAR" />
+          <StackPanel Orientation="Horizontal" Spacing="0">
+            <Border Background="{ThemeResource PanelBrush}" CornerRadius="4,0,0,4" Padding="10,6">
+              <TextBlock Style="{StaticResource BodySmallText}" Text="Today" />
+            </Border>
+            <Border Background="{ThemeResource ActionBrush}" Padding="10,6">
+              <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource OnActionBrush}" Text="Week" />
+            </Border>
+            <Border Background="{ThemeResource PanelBrush}" CornerRadius="0,4,4,0" Padding="10,6">
+              <TextBlock Style="{StaticResource BodySmallText}" Text="Done" />
+            </Border>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+
+    <!-- Generated XAML code block — full ColorPaletteOverride.xaml with both
+         Light + Dark theme dictionaries. Inlines are built in code-behind
+         (DesignLayerView.xaml.cs) from the live DesignTokens on the proxy so
+         the colored output reflects the current canvas state. -->
+    <Border Background="{ThemeResource CodeDarkSurfaceBrush}"
+            CornerRadius="6" Padding="0" Margin="0,28,0,0">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="36" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border CornerRadius="6,6,0,0" Background="#16181C">
+          <Grid Padding="14,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock FontFamily="{StaticResource MonoFontFamily}" FontSize="11" FontWeight="SemiBold"
+                       Foreground="#E4E4E4"
+                       VerticalAlignment="Center"
+                       Text="ColorPaletteOverride.xaml" />
+            <TextBlock Grid.Column="1" Style="{StaticResource EyebrowTinyText}"
+                       Foreground="#9DA4AF"
+                       Text="GENERATED FROM TOKEN MAP"
+                       VerticalAlignment="Center" />
+          </Grid>
+        </Border>
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollMode="Auto"
+                      VerticalScrollMode="Disabled">
+          <TextBlock x:Name="PaletteXamlText"
+                     FontFamily="{StaticResource MonoFontFamily}"
+                     FontSize="12"
+                     LineHeight="20"
+                     Padding="16,14"
+                     Foreground="#E4E4E4"
+                     TextWrapping="NoWrap" />
+        </ScrollViewer>
+      </Grid>
+    </Border>
+
+    <layers:ComposerFooter Margin="0,28,0,0" />
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,45 @@
+<UserControl x:Class="Composer.Presentation.Previewers.InteractionsPreviewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <StackPanel Spacing="14">
+    <TextBlock Style="{StaticResource HeadlineSmallText}" Text="Interaction Spec" />
+
+    <TextBlock Style="{StaticResource EyebrowText}" Text="OVERVIEW" Margin="0,4,0,0" />
+    <TextBlock Style="{StaticResource BodySmallText}" TextWrapping="Wrap"
+               Text="Every screen must implement all six states. State names map exactly to Visualstategroup state names in generated XAML." />
+
+    <TextBlock Style="{StaticResource EyebrowText}" Text="STATE CONTRACT" Margin="0,4,0,0" />
+    <StackPanel Spacing="8">
+      <StackPanel Spacing="2">
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Default" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}"
+                   TextWrapping="Wrap" Text="Static — nothing in progress, no banner." />
+      </StackPanel>
+      <StackPanel Spacing="2">
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Loading" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}"
+                   TextWrapping="Wrap" Text="In-line skeleton, no full-screen spinner." />
+      </StackPanel>
+      <StackPanel Spacing="2">
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Empty" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}"
+                   TextWrapping="Wrap" Text="No data — but not an error. Calm copy + one CTA." />
+      </StackPanel>
+      <StackPanel Spacing="2">
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Error" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}"
+                   TextWrapping="Wrap" Text="Surface the cause + a retry, never a stack trace." />
+      </StackPanel>
+      <StackPanel Spacing="2">
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Success" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}"
+                   TextWrapping="Wrap" Text="Confirmation. Olive accent for a moment, then settle." />
+      </StackPanel>
+      <StackPanel Spacing="2">
+        <TextBlock Style="{StaticResource LabelLargeText}" Text="Offline" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}"
+                   TextWrapping="Wrap" Text="Queue locally, pulse the banner, never block writes." />
+      </StackPanel>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

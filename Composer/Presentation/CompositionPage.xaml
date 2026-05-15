@@ -1,0 +1,469 @@
+<Page x:Class="Composer.Presentation.CompositionPage"
+      x:Name="Page"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Composer.Presentation"
+      xmlns:layers="using:Composer.Presentation.Layers"
+      xmlns:controls="using:Composer.Presentation.Controls"
+      xmlns:previewers="using:Composer.Presentation.Previewers"
+      xmlns:mvux="using:Uno.Extensions.Reactive.UI"
+      xmlns:utu="using:Uno.Toolkit.UI"
+      xmlns:m="using:Composer.Presentation"
+      Background="{ThemeResource DeskBrush}"
+      NavigationCacheMode="Required">
+
+  <Page.Resources>
+    <local:BoolToVisibilityConverter          x:Key="BoolToVis" />
+    <local:LayerLifecycleToBorderBrushConverter x:Key="LifecycleBorder" />
+    <local:LifecycleIsLockedConverter         x:Key="IsLockedVis" />
+    <local:LifecycleIsActiveConverter         x:Key="IsActiveVis" />
+    <local:LifecycleToIndexBrushConverter     x:Key="LifecycleIndexBrush" />
+    <local:StringNotEmptyToVisibilityConverter x:Key="NonEmptyVis" />
+    <local:IndexToStepNumberConverter         x:Key="StepNumber" />
+    <local:GapCountConverter                  x:Key="GapText" />
+    <local:LayerStatusLabelConverter          x:Key="LayerStatusLabel" />
+
+    <Storyboard x:Key="NotepadSettle">
+      <DoubleAnimation Storyboard.TargetName="NotepadTransform"
+                       Storyboard.TargetProperty="Y"
+                       From="12" To="0" Duration="0:0:0.72">
+        <DoubleAnimation.EasingFunction>
+          <QuinticEase EasingMode="EaseOut" />
+        </DoubleAnimation.EasingFunction>
+      </DoubleAnimation>
+      <DoubleAnimation Storyboard.TargetName="NotepadFrame"
+                       Storyboard.TargetProperty="Opacity"
+                       From="0" To="1" Duration="0:0:0.48" />
+    </Storyboard>
+
+    <LinearGradientBrush x:Key="NotepadInsetHighlightBrush" StartPoint="0,0" EndPoint="1,0">
+      <GradientStop Color="#00FFFFFF" Offset="0.0" />
+      <GradientStop Color="#80FFFFFF" Offset="0.5" />
+      <GradientStop Color="#00FFFFFF" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="NotepadInsetBottomBrush" StartPoint="0,0" EndPoint="1,0">
+      <GradientStop Color="#00000000" Offset="0.0" />
+      <GradientStop Color="#22000000" Offset="0.5" />
+      <GradientStop Color="#00000000" Offset="1.0" />
+    </LinearGradientBrush>
+  </Page.Resources>
+
+  <Grid Padding="20">
+    <Border x:Name="ThemePullTab"
+            Canvas.ZIndex="20"
+            Width="36"
+            Height="84"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,10,-8,0"
+            Background="{ThemeResource PanelBrush}"
+            BorderBrush="{ThemeResource HairlineStrongBrush}"
+            BorderThickness="1"
+            CornerRadius="18"
+            PointerPressed="OnThemePullTabPointerPressed"
+            PointerMoved="OnThemePullTabPointerMoved"
+            PointerReleased="OnThemePullTabPointerReleased"
+            PointerCanceled="OnThemePullTabPointerCanceled"
+            PointerCaptureLost="OnThemePullTabPointerCaptureLost">
+      <Border.RenderTransform>
+        <TranslateTransform x:Name="ThemePullTabTransform" />
+      </Border.RenderTransform>
+      <Grid>
+        <Rectangle x:Name="ThemePullCord"
+                   Width="1.5"
+                   Height="1"
+                   RadiusX="0.75"
+                   RadiusY="0.75"
+                   Fill="{ThemeResource Ink4Brush}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   RenderTransformOrigin="0.5,0">
+          <Rectangle.RenderTransform>
+            <ScaleTransform x:Name="ThemePullCordScale" ScaleY="16" />
+          </Rectangle.RenderTransform>
+        </Rectangle>
+        <Border x:Name="ThemePullHandle"
+                Width="22"
+                Height="6"
+                CornerRadius="3"
+                Background="{ThemeResource Ink3Brush}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top">
+          <Border.RenderTransform>
+            <TranslateTransform x:Name="ThemePullHandleTransform" Y="14" />
+          </Border.RenderTransform>
+        </Border>
+        <TextBlock x:Name="ThemePullGlyph"
+                   Text="DARK"
+                   Style="{StaticResource EyebrowTinyText}"
+                   Foreground="{ThemeResource Ink4Brush}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Margin="0,0,0,9" />
+      </Grid>
+    </Border>
+
+    <Grid x:Name="NotepadFrame"
+          Opacity="0"
+          MaxWidth="680"
+          HorizontalAlignment="Center">
+      <Grid.RenderTransform>
+        <TranslateTransform x:Name="NotepadTransform" Y="12" />
+      </Grid.RenderTransform>
+
+      <utu:ShadowContainer>
+        <utu:ShadowContainer.Shadows>
+          <utu:ShadowCollection>
+            <utu:Shadow OffsetX="0" OffsetY="12" BlurRadius="32" Color="Black" Opacity="0.10" />
+            <utu:Shadow OffsetX="0" OffsetY="3"  BlurRadius="6"  Color="Black" Opacity="0.15" />
+          </utu:ShadowCollection>
+        </utu:ShadowContainer.Shadows>
+
+      <Border x:Name="Notepad"
+              Background="{ThemeResource NotepadSurfaceBrush}"
+              CornerRadius="14"
+              BorderBrush="{ThemeResource HairlineBrush}"
+              BorderThickness="1">
+
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition x:Name="LeftRailColumn"  Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition x:Name="RightRailColumn" Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="LeftRail"
+                Grid.Column="0"
+                Width="0"
+                Visibility="Collapsed"
+                BorderBrush="{ThemeResource HairlineBrush}"
+                BorderThickness="0,0,1,0">
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <utu:AutoLayout Orientation="Vertical"
+                            Spacing="14"
+                            Padding="20,28,16,28"
+                            PrimaryAxisAlignment="Start"
+                            CounterAxisAlignment="Stretch">
+              <TextBlock Style="{StaticResource EyebrowText}"
+                         Text="COMPOSITION STACK" />
+              <TextBlock Style="{StaticResource BodySmallText}"
+                         Foreground="{ThemeResource Ink3Brush}"
+                         TextWrapping="Wrap"
+                         Text="A conversation that crystallises into a system." />
+
+              <Grid Margin="0,6,0,0">
+                <Rectangle Width="1"
+                           HorizontalAlignment="Left"
+                           Margin="12,16,0,16"
+                           Fill="{ThemeResource HairlineBrush}" />
+                <Ellipse x:Name="RailTravelDot"
+                         Width="11"
+                         Height="11"
+                         Fill="{ThemeResource InkBrush}"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="6.5,0,0,0"
+                         Opacity="0"
+                         IsHitTestVisible="False"
+                         RenderTransformOrigin="0.5,0.5">
+                  <Ellipse.RenderTransform>
+                    <CompositeTransform x:Name="RailTravelDotTransform" ScaleX="1" ScaleY="1" />
+                  </Ellipse.RenderTransform>
+                </Ellipse>
+
+                <ItemsRepeater ItemsSource="{Binding Layers}">
+                  <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                      <Border Background="Transparent"
+                              Padding="0,9,8,11"
+                              Tapped="OnRailItemTapped"
+                              PointerEntered="OnRailItemPointerEntered"
+                              PointerExited="OnRailItemPointerExited">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24" />
+                            <ColumnDefinition Width="*" />
+                          </Grid.ColumnDefinitions>
+
+                          <Border x:Name="RailHoverSurface"
+                                  Grid.ColumnSpan="2"
+                                  Background="{ThemeResource ActionBrush}"
+                                  CornerRadius="8"
+                                  Opacity="0"
+                                  RenderTransformOrigin="0,0.5">
+                            <Border.RenderTransform>
+                              <ScaleTransform x:Name="RailHoverScale" ScaleX="0.985" ScaleY="0.985" />
+                            </Border.RenderTransform>
+                          </Border>
+
+                          <Grid Grid.Column="0"
+                                Width="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Margin="0,5,0,0">
+
+                            <Grid HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding Lifecycle, Converter={StaticResource IsLockedVis}}">
+                              <Ellipse Width="11" Height="11"
+                                       Fill="{ThemeResource NotepadSurfaceBrush}" />
+                              <Ellipse Width="7" Height="7"
+                                       Fill="{ThemeResource Ink2Brush}" />
+                            </Grid>
+
+                            <Grid HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding Lifecycle, Converter={StaticResource IsActiveVis}}"
+                                  Loaded="OnActiveDotLoaded"
+                                  Unloaded="OnActiveDotUnloaded">
+                              <Ellipse Width="15" Height="15"
+                                       Fill="{ThemeResource NotepadSurfaceBrush}" />
+                              <Ellipse x:Name="ActiveDotInner"
+                                       Width="11" Height="11"
+                                       Fill="{ThemeResource InkBrush}"
+                                       RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform>
+                                  <ScaleTransform x:Name="ActiveDotScale" />
+                                </Ellipse.RenderTransform>
+                              </Ellipse>
+                            </Grid>
+                          </Grid>
+
+                          <Grid Grid.Column="1"
+                                x:Name="ContentLane"
+                                RenderTransformOrigin="0,0.5">
+                            <Grid.RenderTransform>
+                              <TranslateTransform x:Name="ContentTranslate" />
+                            </Grid.RenderTransform>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="32" />
+                              <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Style="{StaticResource MonoLabelText}"
+                                       FontSize="11"
+                                       Foreground="{Binding Lifecycle, Converter={StaticResource LifecycleIndexBrush}}"
+                                       VerticalAlignment="Top"
+                                       Margin="0,4,0,0"
+                                       Text="{Binding Index, Converter={StaticResource StepNumber}}" />
+                            <StackPanel Grid.Column="1" Spacing="3">
+                              <TextBlock Style="{StaticResource LabelLargeText}"
+                                         Foreground="{Binding Lifecycle, Converter={StaticResource LifecycleIndexBrush}}"
+                                         Text="{Binding Label}" />
+                              <TextBlock Style="{StaticResource BodySmallText}"
+                                         Foreground="{ThemeResource Ink3Brush}"
+                                         TextWrapping="Wrap"
+                                         Visibility="{Binding Summary, Converter={StaticResource NonEmptyVis}}"
+                                         Text="{Binding Summary}" />
+                              <TextBlock Style="{StaticResource MonoLabelText}"
+                                         FontSize="11"
+                                         Foreground="{ThemeResource Ink4Brush}"
+                                         Visibility="{Binding GapCount, Converter={StaticResource GapText}, ConverterParameter=vis}"
+                                         Text="{Binding GapCount, Converter={StaticResource GapText}}" />
+                            </StackPanel>
+                          </Grid>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+              </Grid>
+            </utu:AutoLayout>
+          </ScrollViewer>
+        </Border>
+
+        <ScrollViewer x:Name="CenterScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+          <Grid x:Name="CenterContent"
+                HorizontalAlignment="Center"
+                MaxWidth="780"
+                Margin="56,28,56,40">
+
+            <layers:IntentLayerView x:Name="Layer0" Visibility="Visible" />
+            <layers:UxLayerView x:Name="Layer1" Visibility="Collapsed" />
+            <layers:ArchitectureLayerView x:Name="Layer2" Visibility="Collapsed" />
+            <layers:DesignLayerView x:Name="Layer3" Visibility="Collapsed" />
+            <layers:InteractionsLayerView x:Name="Layer4" Visibility="Collapsed" />
+            <layers:DataLayerView x:Name="Layer5" Visibility="Collapsed" />
+            <layers:ImplementationLayerView x:Name="Layer6" Visibility="Collapsed" />
+            <layers:ScaffoldLayerView x:Name="Layer7" Visibility="Collapsed" />
+
+          </Grid>
+        </ScrollViewer>
+
+        <Border x:Name="RightRail"
+                Grid.Column="2"
+                Width="0"
+                Visibility="Collapsed"
+                BorderBrush="{ThemeResource HairlineBrush}"
+                BorderThickness="1,0,0,0">
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <utu:AutoLayout Orientation="Vertical"
+                            Spacing="14"
+                            Padding="20,28,20,28"
+                            PrimaryAxisAlignment="Start"
+                            CounterAxisAlignment="Stretch">
+
+              <controls:CoverageBadge />
+
+              <StackPanel Spacing="6">
+                <TextBlock Style="{StaticResource EyebrowText}" Text="LIVE FILE" />
+                <TextBlock Style="{StaticResource BodySmallText}"
+                           Foreground="{ThemeResource Ink3Brush}"
+                           TextWrapping="Wrap"
+                           Text="Updates as the canvas changes. Edit to override." />
+              </StackPanel>
+
+              <Grid Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource MonoLabelText}"
+                           Text="{Binding ActiveLayer.Filename}"
+                           VerticalAlignment="Center" />
+                <Button Grid.Column="1"
+                        Style="{StaticResource LinkButtonStyle}"
+                        Content="Copy"
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"
+                        Click="OnCopyActiveMarkdownClicked" />
+                <Border Grid.Column="2"
+                        Background="{ThemeResource PanelBrush}"
+                        CornerRadius="6"
+                        Padding="2"
+                        VerticalAlignment="Center">
+                  <StackPanel Orientation="Horizontal" Spacing="0">
+                    <Border x:Name="PreviewPill"
+                            CornerRadius="4"
+                            Padding="9,4"
+                            Tapped="OnPreviewPillTapped"
+                            PointerEntered="OnPillPointerEntered"
+                            PointerExited="OnPillPointerExited">
+                      <TextBlock x:Name="PreviewPillText"
+                                 Style="{StaticResource BodySmallText}"
+                                 Text="Preview" />
+                    </Border>
+                    <Border x:Name="EditPill"
+                            CornerRadius="4"
+                            Padding="9,4"
+                            Tapped="OnEditPillTapped"
+                            PointerEntered="OnPillPointerEntered"
+                            PointerExited="OnPillPointerExited">
+                      <TextBlock x:Name="EditPillText"
+                                 Style="{StaticResource BodySmallText}"
+                                 Text="Edit" />
+                    </Border>
+                  </StackPanel>
+                </Border>
+              </Grid>
+
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource EyebrowTinyText}"
+                           Foreground="{ThemeResource Ink3Brush}"
+                           Text="GENERATED FROM CANVAS"
+                           VerticalAlignment="Center" />
+                <Button Grid.Column="1"
+                        Style="{StaticResource LinkButtonStyle}"
+                        Content="↻ Regenerate"
+                        Command="{Binding RegenerateActive}" />
+              </Grid>
+
+              <Border Background="{ThemeResource NotepadSurfaceBrush}"
+                      BorderBrush="{ThemeResource HairlineBrush}"
+                      BorderThickness="1"
+                      CornerRadius="8"
+                      Padding="16,18,16,18">
+                <Grid>
+                  <Grid x:Name="PreviewModeHost" Visibility="Visible">
+                    <Grid x:Name="StructuredPreviewHost">
+                      <previewers:IntentPreviewer        x:Name="Preview0" Visibility="Visible" />
+                      <previewers:UxPreviewer            x:Name="Preview1" Visibility="Collapsed" />
+                      <previewers:InteractionsPreviewer  x:Name="Preview4" Visibility="Collapsed" />
+                      <previewers:DataPreviewer          x:Name="Preview5" Visibility="Collapsed" />
+                      <previewers:ImplementationPreviewer x:Name="Preview6" Visibility="Collapsed" />
+                      <previewers:ScaffoldPreviewer      x:Name="Preview7" Visibility="Collapsed" />
+                    </Grid>
+                    <controls:MarkdownPreviewer x:Name="OverrideMarkdownView" Visibility="Collapsed" />
+                  </Grid>
+
+                  <TextBox x:Name="EditModeTextBox"
+                           Visibility="Collapsed"
+                           TextChanged="OnEditModeTextChanged"
+                           AcceptsReturn="True"
+                           TextWrapping="Wrap"
+                           MinHeight="320"
+                           VerticalAlignment="Stretch"
+                           HorizontalAlignment="Stretch"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           FontFamily="{StaticResource MonoFontFamily}"
+                           FontSize="12" />
+                </Grid>
+              </Border>
+
+
+              <Border BorderBrush="{ThemeResource HairlineBrush}"
+                      BorderThickness="0,1,0,0"
+                      Padding="0,14,0,0">
+                <StackPanel Spacing="8">
+                  <TextBlock Style="{StaticResource EyebrowText}" Text="FILES" />
+                  <ItemsControl ItemsSource="{Binding Layers}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Grid Margin="0,3">
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="14" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                          </Grid.ColumnDefinitions>
+                          <Ellipse x:Name="FileStatusDot"
+                                   Width="7" Height="7"
+                                   VerticalAlignment="Center"
+                                   Fill="{Binding Lifecycle, Converter={StaticResource LifecycleBorder}}"
+                                   RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                              <ScaleTransform />
+                            </Ellipse.RenderTransform>
+                          </Ellipse>
+                          <TextBlock Grid.Column="1"
+                                     Style="{StaticResource MonoBodyText}"
+                                     Foreground="{ThemeResource Ink2Brush}"
+                                     Text="{Binding Filename}" />
+                           <TextBlock Grid.Column="2"
+                                      Style="{StaticResource EyebrowTinyText}"
+                                      Text="{Binding Converter={StaticResource LayerStatusLabel}}" />
+                        </Grid>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+
+            </utu:AutoLayout>
+          </ScrollViewer>
+        </Border>
+
+        <Border VerticalAlignment="Top"
+                Height="1"
+                Margin="14,1,14,0"
+                Background="{StaticResource NotepadInsetHighlightBrush}"
+                Grid.ColumnSpan="3"
+                IsHitTestVisible="False" />
+
+        <Border VerticalAlignment="Bottom"
+                Height="1"
+                Margin="14,0,14,1"
+                Background="{StaticResource NotepadInsetBottomBrush}"
+                Grid.ColumnSpan="3"
+                IsHitTestVisible="False" />
+      </Grid>
+    </Border>
+      </utu:ShadowContainer>
+    </Grid>
+  </Grid>
+</Page>

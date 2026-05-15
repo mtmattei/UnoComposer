@@ -1,0 +1,22 @@
+<Project ToolsVersion="15.0">
+  <!--
+    To update the version of Uno, you should instead update the Sdk version in the global.json file.
+
+    See https://aka.platform.uno/using-uno-sdk for more information.
+    See https://aka.platform.uno/using-uno-sdk#implicit-packages for more information regarding the Implicit Packages.
+  -->
+  <ItemGroup>
+    <!-- User secrets — dev-only Anthropic API key storage (App.xaml.cs). -->
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.0" />
+
+    <!-- Skia-only Toolkit additions (ShadowContainer). Version pinned to match
+         the implicit Uno.Toolkit.WinUI brought in by Uno.Sdk 6.5.31. -->
+    <PackageVersion Include="Uno.Toolkit.Skia.WinUI" Version="8.4.2" />
+
+    <!-- Uno CommunityToolkit MarkdownTextBlock renderer for generated briefs. -->
+    <PackageVersion Include="Uno.CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.205" />
+
+    <!-- Override vulnerable transitive version from Uno.WinUI.Runtime.Skia.X11. -->
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.21.3" />
+  </ItemGroup>
+</Project>

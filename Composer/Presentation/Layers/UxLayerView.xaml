@@ -1,0 +1,118 @@
+<UserControl x:Class="Composer.Presentation.Layers.UxLayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:layers="using:Composer.Presentation.Layers">
+
+  <StackPanel Spacing="0">
+    <TextBlock Style="{StaticResource RecapText}"
+               Text="↳ We've named what we're building — now let's trace how someone uses it."
+               Margin="0,0,0,18" />
+
+    <Grid Margin="0,0,0,24">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <Ellipse Width="6" Height="6" Fill="{ThemeResource ActionBrush}" VerticalAlignment="Center" />
+        <TextBlock Style="{StaticResource EyebrowText}" Text="02 · UX" />
+      </StackPanel>
+      <TextBlock Grid.Column="1"
+                 Style="{StaticResource EyebrowText}"
+                 Foreground="{ThemeResource Ink4Brush}"
+                 Text="02 / 08" />
+    </Grid>
+
+    <TextBlock Style="{StaticResource DisplaySmallText}"
+               Text="How do users move through it?"
+               Margin="0,0,0,12" />
+
+    <TextBlock x:Name="FlowSummaryText"
+               Style="{StaticResource BodyLargeText}"
+               Foreground="{ThemeResource Ink3Brush}"
+               TextWrapping="Wrap"
+               Margin="0,0,0,28" />
+
+    <!-- Section header -->
+    <Grid Margin="0,0,0,16">
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <TextBlock x:Name="FilenameText" Style="{StaticResource MonoLabelText}" />
+        <TextBlock Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink4Brush}" Text="·" />
+        <TextBlock Style="{StaticResource EyebrowText}" Text="FLOW PREVIEW" />
+      </StackPanel>
+    </Grid>
+
+    <Border BorderBrush="{ThemeResource HairlineBrush}" BorderThickness="0,1,0,0" Margin="0,0,0,18" />
+
+    <!-- 5-card horizontal scroller — eyebrow + caption per card are populated
+         in code-behind from IntentContext.ScreenFlow (vibe-aware). Skeleton
+         bars stay decorative. Scrollbar is now Auto so the 5th card is
+         reachable when the notepad is narrower than the card row. -->
+    <ScrollViewer HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled">
+      <StackPanel Orientation="Horizontal" Spacing="14">
+        <Border Background="{ThemeResource NotepadSurfaceBrush}"
+                BorderBrush="{ThemeResource HairlineStrongBrush}" BorderThickness="1"
+                CornerRadius="8" Padding="16,20" Width="148">
+          <StackPanel Spacing="12">
+            <TextBlock x:Name="Card0Title" Style="{StaticResource EyebrowTinyText}" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" Width="80" HorizontalAlignment="Left" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" Width="100" HorizontalAlignment="Left" />
+            <TextBlock x:Name="Card0Caption" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" />
+          </StackPanel>
+        </Border>
+        <TextBlock Style="{StaticResource BodyMediumText}" VerticalAlignment="Center" Foreground="{ThemeResource Ink3Brush}" Text="→" />
+        <Border Background="{ThemeResource NotepadSurfaceBrush}"
+                BorderBrush="{ThemeResource HairlineStrongBrush}" BorderThickness="1"
+                CornerRadius="8" Padding="16,20" Width="148">
+          <StackPanel Spacing="12">
+            <TextBlock x:Name="Card1Title" Style="{StaticResource EyebrowTinyText}" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" Width="60" HorizontalAlignment="Left" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="20" CornerRadius="4" />
+            <TextBlock x:Name="Card1Caption" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" />
+          </StackPanel>
+        </Border>
+        <TextBlock Style="{StaticResource BodyMediumText}" VerticalAlignment="Center" Foreground="{ThemeResource Ink3Brush}" Text="→" />
+        <Border Background="{ThemeResource NotepadSurfaceBrush}"
+                BorderBrush="{ThemeResource HairlineStrongBrush}" BorderThickness="1"
+                CornerRadius="8" Padding="16,20" Width="148">
+          <StackPanel Spacing="12">
+            <TextBlock x:Name="Card2Title" Style="{StaticResource EyebrowTinyText}" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" Width="70" HorizontalAlignment="Left" />
+            <TextBlock x:Name="Card2Caption" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" />
+          </StackPanel>
+        </Border>
+        <TextBlock Style="{StaticResource BodyMediumText}" VerticalAlignment="Center" Foreground="{ThemeResource Ink3Brush}" Text="→" />
+        <Border Background="{ThemeResource NotepadSurfaceBrush}"
+                BorderBrush="{ThemeResource HairlineStrongBrush}" BorderThickness="1"
+                CornerRadius="8" Padding="16,20" Width="148">
+          <StackPanel Spacing="12">
+            <TextBlock x:Name="Card3Title" Style="{StaticResource EyebrowTinyText}" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="20" CornerRadius="4" />
+            <Border Background="{ThemeResource ActionSoftBrush}" Height="18" CornerRadius="4" />
+            <TextBlock x:Name="Card3Caption" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource Ink3Brush}" />
+          </StackPanel>
+        </Border>
+        <TextBlock Style="{StaticResource BodyMediumText}" VerticalAlignment="Center" Foreground="{ThemeResource Ink3Brush}" Text="→" />
+        <Border Background="{ThemeResource NotepadSurfaceBrush}"
+                BorderBrush="{ThemeResource HairlineStrongBrush}" BorderThickness="1"
+                CornerRadius="8" Padding="16,20" Width="148">
+          <StackPanel Spacing="12">
+            <TextBlock x:Name="Card4Title" Style="{StaticResource EyebrowTinyText}" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" Width="40" HorizontalAlignment="Left" />
+            <Border Background="{ThemeResource HairlineStrongBrush}" Height="6" CornerRadius="3" Width="80" HorizontalAlignment="Left" />
+            <TextBlock x:Name="Card4Caption" Style="{StaticResource BodySmallText}" Foreground="{ThemeResource SuccessBrush}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+
+    <layers:ComposerFooter Margin="0,28,0,0" />
+  </StackPanel>
+</UserControl>

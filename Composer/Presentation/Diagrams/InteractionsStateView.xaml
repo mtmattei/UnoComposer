@@ -1,0 +1,161 @@
+<UserControl x:Class="Composer.Presentation.Diagrams.InteractionsStateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:m="using:Composer.Presentation">
+  <Viewbox Stretch="Uniform" StretchDirection="DownOnly" HorizontalAlignment="Center">
+    <Canvas Width="800" Height="340">
+
+      <!-- ── Transitions (drawn first) ─────────────────────────── -->
+      <!-- default → loading : submit -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 190 100 L 340 100" />
+      <Border Canvas.Left="237" Canvas.Top="92" Width="56" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="submit" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- loading → success : resolves -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 460 100 L 610 100" />
+      <Border Canvas.Left="503" Canvas.Top="92" Width="64" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="resolves" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- loading → error : rejects (curved) -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 460 110 Q 510 200 615 222" />
+      <Border Canvas.Left="480" Canvas.Top="172" Width="58" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="rejects" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- loading → empty : no data (vertical) -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 400 122 L 400 218" />
+      <Border Canvas.Left="370" Canvas.Top="162" Width="60" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="no data" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- error → loading : retry (curved) -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 615 218 Q 540 145 460 92" />
+      <Border Canvas.Left="510" Canvas.Top="137" Width="56" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="retry" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- default → offline : disconnect (vertical) -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 130 122 L 130 218" />
+      <Border Canvas.Left="98" Canvas.Top="162" Width="64" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="disconnect" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- offline → loading : reconnect (curved) -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 190 230 Q 280 165 340 110" />
+      <Border Canvas.Left="240" Canvas.Top="150" Width="60" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="reconnect" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- success → default : reset (large arc across the top) -->
+      <Path Stroke="{ThemeResource Ink3Brush}" StrokeThickness="1.1"
+            StrokeDashArray="4 3" Data="M 670 78 Q 400 12 130 78" />
+      <Border Canvas.Left="372" Canvas.Top="16" Width="56" Height="16"
+              Background="{ThemeResource NotepadSurfaceBrush}" CornerRadius="2">
+        <TextBlock Text="reset" FontStyle="Italic" FontSize="10"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- ── States (pill nodes) ───────────────────────────────── -->
+      <!-- Default - active (filled black, accent pulse dot) -->
+      <Border Canvas.Left="70" Canvas.Top="78" Width="120" Height="44"
+              CornerRadius="22"
+              m:Motion.Lean="True" BorderThickness="2"
+              BorderBrush="{ThemeResource InkBrush}"
+              Background="{ThemeResource InkBrush}">
+        <TextBlock Text="Default" FontSize="11" FontWeight="SemiBold"
+                   Foreground="{ThemeResource NotepadSurfaceBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+      <Ellipse Canvas.Left="174" Canvas.Top="83" Width="7" Height="7"
+               Fill="{ThemeResource ActionBrush}"
+               m:Motion.Breathe="True" />
+
+      <!-- Loading — indigo outlined -->
+      <Border Canvas.Left="340" Canvas.Top="78" Width="120" Height="44"
+              CornerRadius="22"
+              m:Motion.Lean="True" BorderThickness="1.3"
+              BorderBrush="{ThemeResource InfoBrush}"
+              Background="{ThemeResource NotepadSurfaceBrush}">
+        <TextBlock Text="Loading" FontSize="11" FontWeight="Medium"
+                   Foreground="{ThemeResource InfoBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- Success — green outlined -->
+      <Border Canvas.Left="610" Canvas.Top="78" Width="120" Height="44"
+              CornerRadius="22"
+              m:Motion.Lean="True" BorderThickness="1.3"
+              BorderBrush="{ThemeResource SuccessBrush}"
+              Background="{ThemeResource NotepadSurfaceBrush}">
+        <TextBlock Text="Success" FontSize="11" FontWeight="Medium"
+                   Foreground="{ThemeResource SuccessBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- Offline - accent outlined -->
+      <Border Canvas.Left="70" Canvas.Top="218" Width="120" Height="44"
+              CornerRadius="22"
+              m:Motion.Lean="True" BorderThickness="1.3"
+              BorderBrush="{ThemeResource ActionBrush}"
+              Background="{ThemeResource NotepadSurfaceBrush}">
+        <TextBlock Text="Offline" FontSize="11" FontWeight="Medium"
+                   Foreground="{ThemeResource ActionBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- Empty — gray outlined -->
+      <Border Canvas.Left="340" Canvas.Top="218" Width="120" Height="44"
+              CornerRadius="22"
+              m:Motion.Lean="True" BorderThickness="1.3"
+              BorderBrush="{ThemeResource Ink3Brush}"
+              Background="{ThemeResource NotepadSurfaceBrush}">
+        <TextBlock Text="Empty" FontSize="11" FontWeight="Medium"
+                   Foreground="{ThemeResource Ink3Brush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <!-- Error — brick outlined -->
+      <Border Canvas.Left="610" Canvas.Top="218" Width="120" Height="44"
+              CornerRadius="22"
+              m:Motion.Lean="True" BorderThickness="1.3"
+              BorderBrush="{ThemeResource WarnBrush}"
+              Background="{ThemeResource NotepadSurfaceBrush}">
+        <TextBlock Text="Error" FontSize="11" FontWeight="Medium"
+                   Foreground="{ThemeResource WarnBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+    </Canvas>
+  </Viewbox>
+</UserControl>

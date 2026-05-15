@@ -1,0 +1,227 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Composer.Presentation.Controls"
+    xmlns:p="using:Composer.Presentation"
+    xmlns:utu="using:Uno.Toolkit.UI">
+
+    <!-- Platform icon templates — text-only by default, icon fades + scales -->
+    <!-- in when the chip is Selected. Stroke/fill inherits from the hosting -->
+    <!-- ContentPresenter's Foreground via Uno Toolkit's AncestorBinding, so -->
+    <!-- icons render paper-white on the ink-filled selected pill.           -->
+
+    <DataTemplate x:Key="PlatformIcon_Web">
+        <Grid Width="14" Height="14">
+            <Ellipse Width="11" Height="11"
+                     Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                     StrokeThickness="1.2"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Line X1="1.5" Y1="7" X2="12.5" Y2="7"
+                  Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                  StrokeThickness="1" />
+            <Path Data="M 7 1.5 C 4 4 4 10 7 12.5 M 7 1.5 C 10 4 10 10 7 12.5"
+                  Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                  StrokeThickness="1" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PlatformIcon_Windows">
+        <Grid Width="14" Height="14">
+            <Path Data="M 2 2 H 6.5 V 6.5 H 2 Z M 7.5 2 H 12 V 6.5 H 7.5 Z M 2 7.5 H 6.5 V 12 H 2 Z M 7.5 7.5 H 12 V 12 H 7.5 Z"
+                  Fill="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PlatformIcon_Android">
+        <Grid Width="14" Height="14">
+            <Path Data="M 4 3.4 L 3.2 2.2 M 10 3.4 L 10.8 2.2"
+                  Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                  StrokeThickness="1.2" />
+            <Path Data="M 2.5 6.2 C 2.5 4.3 4.5 3 7 3 C 9.5 3 11.5 4.3 11.5 6.2 L 11.5 10 L 2.5 10 Z"
+                  Fill="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PlatformIcon_iOS">
+        <Grid Width="14" Height="14">
+            <Path Data="M 7 3.5 C 5 3.5 3.5 5 3.5 7.5 C 3.5 10 5 12 6.5 12 C 7.2 12 7.5 11.6 8 11.6 C 8.5 11.6 8.8 12 9.5 12 C 11 12 12.5 10 12.5 7.5 C 12.5 5 11 3.5 9 3.5 C 8 3.5 7.6 4 7 4 C 6.5 4 6.2 3.5 5.5 3.5"
+                  Fill="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}" />
+            <Path Data="M 8 2 C 8.5 1.2 9 1 9.5 1"
+                  Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                  StrokeThickness="1.2" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PlatformIcon_Desktop">
+        <Grid Width="14" Height="14">
+            <Path Data="M 2.1 2.5 L 11.9 2.5 A 0.6 0.6 0 0 1 12.5 3.1 L 12.5 8.9 A 0.6 0.6 0 0 1 11.9 9.5 L 2.1 9.5 A 0.6 0.6 0 0 1 1.5 8.9 L 1.5 3.1 A 0.6 0.6 0 0 1 2.1 2.5 Z"
+                  Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                  StrokeThickness="1.2"
+                  Fill="Transparent" />
+            <Line X1="5" Y1="12" X2="9" Y2="12"
+                  Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                  StrokeThickness="1.2" />
+            <Line X1="7" Y1="9.5" X2="7" Y2="12"
+                  Stroke="{utu:AncestorBinding AncestorType=ContentPresenter, Path=Foreground}"
+                  StrokeThickness="1.2" />
+        </Grid>
+    </DataTemplate>
+
+    <controls:PlatformIconTemplateSelector x:Key="PlatformIconTemplateSelector"
+                                           WebTemplate="{StaticResource PlatformIcon_Web}"
+                                           WindowsTemplate="{StaticResource PlatformIcon_Windows}"
+                                           AndroidTemplate="{StaticResource PlatformIcon_Android}"
+                                           IOSTemplate="{StaticResource PlatformIcon_iOS}"
+                                           DesktopTemplate="{StaticResource PlatformIcon_Desktop}" />
+
+    <p:PlatformKindToDisplayNameConverter x:Key="PlatformKindToDisplayNameConverter" />
+
+    <!-- PlatformChip default style — text-only pill. On Selected, the icon -->
+    <!-- pops in next to the text (fade + slight scale overshoot).           -->
+    <Style TargetType="controls:PlatformChip">
+        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource InkBrush}" />
+        <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+        <Setter Property="FocusVisualMargin" Value="-2" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Foreground" Value="{ThemeResource Ink2Brush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{ThemeResource HairlineBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:PlatformChip">
+                    <Grid x:Name="PartRoot" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <ScaleTransform x:Name="PartRootScale" ScaleX="1" ScaleY="1" />
+                        </Grid.RenderTransform>
+
+                        <Border x:Name="PartPill"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12,7"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                            <utu:AutoLayout Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                <ContentPresenter x:Name="PartIconHost"
+                                                  Foreground="{TemplateBinding Foreground}"
+                                                  ContentTemplateSelector="{StaticResource PlatformIconTemplateSelector}"
+                                                  Content="{Binding PlatformKind, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="Collapsed"
+                                                  Opacity="0"
+                                                  RenderTransformOrigin="0.5,0.5">
+                                    <ContentPresenter.RenderTransform>
+                                        <ScaleTransform x:Name="PartIconScale" ScaleX="0.7" ScaleY="0.7" />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+
+                                <TextBlock x:Name="PartTextLabel"
+                                           Text="{Binding PlatformKind, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PlatformKindToDisplayNameConverter}}"
+                                           FontFamily="{StaticResource UIFontFamily}"
+                                           FontSize="12"
+                                           FontWeight="Normal"
+                                           CharacterSpacing="0"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           VerticalAlignment="Center" />
+                            </utu:AutoLayout>
+                        </Border>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="SelectionStates">
+                                <VisualState x:Name="Unselected">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PartIconHost"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" Duration="0:0:0.12">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="PartIconScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="0.7" Duration="0:0:0.12" />
+                                        <DoubleAnimation Storyboard.TargetName="PartIconScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="0.7" Duration="0:0:0.12" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PartIconHost"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.12" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                    <VisualState.Setters>
+                                        <Setter Target="PartPill.Background" Value="Transparent" />
+                                        <Setter Target="PartPill.BorderBrush" Value="{ThemeResource HairlineBrush}" />
+                                        <Setter Target="PartIconHost.Foreground" Value="{ThemeResource Ink2Brush}" />
+                                        <Setter Target="PartTextLabel.Foreground" Value="{ThemeResource Ink2Brush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PartIconHost"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" Duration="0:0:0.22">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="PartIconScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1" Duration="0:0:0.26">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BackEase EasingMode="EaseOut" Amplitude="0.25" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="PartIconScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1" Duration="0:0:0.26">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BackEase EasingMode="EaseOut" Amplitude="0.25" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                    <VisualState.Setters>
+                                        <Setter Target="PartPill.Background" Value="{ThemeResource InkBrush}" />
+                                        <Setter Target="PartPill.BorderBrush" Value="{ThemeResource InkBrush}" />
+                                        <Setter Target="PartIconHost.Foreground" Value="{ThemeResource NotepadSurfaceBrush}" />
+                                        <Setter Target="PartTextLabel.Foreground" Value="{ThemeResource NotepadSurfaceBrush}" />
+                                        <Setter Target="PartIconHost.Visibility" Value="Visible" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="PartPill.BorderBrush" Value="{ThemeResource InkBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PartRootScale" Storyboard.TargetProperty="ScaleX"
+                                                         To="0.97" Duration="0:0:0.1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="6" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="PartRootScale" Storyboard.TargetProperty="ScaleY"
+                                                         To="0.97" Duration="0:0:0.1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="6" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

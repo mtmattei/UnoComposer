@@ -1,0 +1,60 @@
+<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-desktop</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+
+    <!-- Display name -->
+    <ApplicationTitle>Composer</ApplicationTitle>
+    <!-- App Identifier -->
+    <ApplicationId>com.companyname.composer</ApplicationId>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <!-- Package Publisher -->
+    <ApplicationPublisher>Composer</ApplicationPublisher>
+    <!-- Package Description -->
+    <Description>Composer powered by Uno Platform.</Description>
+
+    <!--
+      User secrets ID — enables `dotnet user-secrets set "Anthropic:ApiKey" "..."`
+      so the Anthropic key never lands in source control. Read at runtime by the
+      PostConfigure shim in App.xaml.cs (dev only).
+    -->
+    <UserSecretsId>comp-composer-anthropic-2026</UserSecretsId>
+
+    <!--
+      UnoFeatures are used to quickly add and manage features enabled for your app.
+      https://aka.platform.uno/singleproject-features
+    -->
+    <UnoFeatures>
+      Material;
+      Svg;
+      Hosting;
+      Toolkit;
+      Logging;
+      MVUX;
+      Configuration;
+      HttpRefit;
+      Serialization;
+      Navigation;
+      SkiaRenderer;
+    </UnoFeatures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Enables AddUserSecrets() in App.xaml.cs (dev only). -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+
+    <!-- ShadowContainer (utu:ShadowContainer) — Skia-only Toolkit addition. -->
+    <PackageReference Include="Uno.Toolkit.Skia.WinUI" />
+
+    <!-- MarkdownTextBlock renderer for generated brief previews. -->
+    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.Markdown" />
+
+    <!-- Security override for transitive Uno.WinUI.Runtime.Skia.X11 dependency. -->
+    <PackageReference Include="Tmds.DBus.Protocol" />
+  </ItemGroup>
+
+</Project>

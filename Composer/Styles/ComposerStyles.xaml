@@ -1,0 +1,126 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:m="using:Composer.Presentation">
+
+  <!-- Primary action button — ink-filled, used for Continue / Generate preview /
+       Accept and lock across composer footers.
+
+       BasedOn the Material 3 filled button so we inherit:
+         - Proper state-layer overlays for PointerOver / Pressed (8% / 12% Fg
+           over Bg) instead of WinUI's default Foreground-swap that produced
+           black-on-black on the dark ink background.
+         - Material focus visuals and disabled state.
+         - Implicit ripple on press.
+
+       The ColorPaletteOverride.xaml already maps PrimaryColor → #1A1A1A ink and
+       OnPrimaryColor → #FAFAFA so MaterialFilledButtonStyle's default colors
+       land where we want without per-style brush overrides.
+
+       The `m:Motion.Lift` attached property still adds the 1px translate-Y on
+       hover on top of the Material state layer — both feedback channels read
+       at once. -->
+  <Style x:Key="PrimaryActionButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialFilledButtonStyle}">
+    <Setter Property="Padding" Value="16,9" />
+    <Setter Property="MinHeight" Value="36" />
+    <Setter Property="CornerRadius" Value="6" />
+    <Setter Property="FontFamily" Value="{StaticResource UIFontFamily}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="m:Motion.Lift" Value="True" />
+  </Style>
+
+  <!-- Accent action button — Secondary-colored variant of the filled button.
+       SecondaryColor / OnSecondaryColor in ColorPaletteOverride map to a muted
+       teal/sage accent. Inherits Material's state-layer
+       overlay machinery so hover/pressed darken predictably. -->
+  <Style x:Key="AccentActionButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialFilledButtonStyle}">
+    <Setter Property="Background" Value="{ThemeResource SecondaryBrush}" />
+    <Setter Property="Foreground" Value="{ThemeResource OnSecondaryBrush}" />
+    <Setter Property="BorderBrush" Value="{ThemeResource SecondaryBrush}" />
+    <Setter Property="Padding" Value="16,9" />
+    <Setter Property="MinHeight" Value="36" />
+    <Setter Property="CornerRadius" Value="6" />
+    <Setter Property="FontFamily" Value="{StaticResource UIFontFamily}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="m:Motion.Lift" Value="True" />
+  </Style>
+
+  <Style x:Key="GhostButtonStyle" TargetType="Button">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{ThemeResource Ink2Brush}" />
+    <Setter Property="BorderBrush" Value="{ThemeResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="10,7" />
+    <Setter Property="MinHeight" Value="32" />
+    <Setter Property="CornerRadius" Value="6" />
+    <Setter Property="FontFamily" Value="{StaticResource UIFontFamily}" />
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="m:Motion.Lift" Value="True" />
+  </Style>
+
+  <Style x:Key="LinkButtonStyle" TargetType="Button" BasedOn="{StaticResource GhostButtonStyle}">
+    <Setter Property="Padding" Value="2,0" />
+    <Setter Property="MinHeight" Value="20" />
+    <Setter Property="FontWeight" Value="Normal" />
+  </Style>
+
+  <!-- Suggestion chip: a low-emphasis pill-shaped button. -->
+  <Style x:Key="SuggestionChipStyle" TargetType="Button">
+    <Setter Property="Background" Value="{ThemeResource NotepadSurfaceBrush}" />
+    <Setter Property="BorderBrush" Value="{ThemeResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Foreground" Value="{ThemeResource Ink2Brush}" />
+    <Setter Property="Padding" Value="10,5" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="CornerRadius" Value="6" />
+    <Setter Property="FontFamily" Value="{StaticResource UIFontFamily}" />
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="m:Motion.Lift" Value="True" />
+  </Style>
+
+  <!-- Composer textarea -->
+  <Style x:Key="ComposerTextBoxStyle" TargetType="TextBox">
+    <Setter Property="Background" Value="{ThemeResource NotepadSurfaceBrush}" />
+    <Setter Property="BorderBrush" Value="{ThemeResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Foreground" Value="{ThemeResource InkBrush}" />
+    <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="AcceptsReturn" Value="True" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="Padding" Value="12,11" />
+    <Setter Property="CornerRadius" Value="6" />
+    <Setter Property="PlaceholderForeground" Value="{ThemeResource Ink4Brush}" />
+  </Style>
+
+  <!-- Field row used by Intent layer -->
+  <Style x:Key="IntentFieldTextBoxStyle" TargetType="TextBox">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Foreground" Value="{ThemeResource InkBrush}" />
+    <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="Padding" Value="0,4" />
+    <Setter Property="PlaceholderForeground" Value="{ThemeResource Ink4Brush}" />
+  </Style>
+
+  <!-- Composition stack item -->
+  <Style x:Key="StackItemBorderStyle" TargetType="Border">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Padding" Value="10,8,10,8" />
+    <Setter Property="BorderThickness" Value="2,0,0,0" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="CornerRadius" Value="0" />
+  </Style>
+
+</ResourceDictionary>

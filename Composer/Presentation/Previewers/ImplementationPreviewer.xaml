@@ -1,0 +1,48 @@
+<UserControl x:Class="Composer.Presentation.Previewers.ImplementationPreviewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <StackPanel Spacing="14">
+    <TextBlock Style="{StaticResource HeadlineSmallText}" Text="Implementation Plan" />
+    <TextBlock Style="{StaticResource BodySmallText}"
+               Foreground="{ThemeResource Ink3Brush}"
+               TextWrapping="Wrap"
+               Text="Six phases, plain dependencies, agent prompts inline." />
+
+    <StackPanel Spacing="4">
+      <TextBlock Style="{StaticResource EyebrowText}" Text="PHASE 1 — SCAFFOLD" />
+      <TextBlock Style="{StaticResource BodySmallText}" TextWrapping="Wrap"
+                 Foreground="{ThemeResource Ink3Brush}"
+                 Text="Multi-head Uno solution with MVUX + Uno.Extensions" />
+    </StackPanel>
+    <StackPanel Spacing="4">
+      <TextBlock Style="{StaticResource EyebrowText}" Text="PHASE 2 — UX SHELL" />
+      <TextBlock Style="{StaticResource BodySmallText}" TextWrapping="Wrap"
+                 Foreground="{ThemeResource Ink3Brush}"
+                 Text="Five-page skeleton, FeedView wired, navigation regions" />
+    </StackPanel>
+    <StackPanel Spacing="4">
+      <TextBlock Style="{StaticResource EyebrowText}" Text="PHASE 3 — DATA" />
+      <TextBlock Style="{StaticResource BodySmallText}" TextWrapping="Wrap"
+                 Foreground="{ThemeResource Ink3Brush}"
+                 Text="Kiota client, records, local cache, sync" />
+    </StackPanel>
+    <StackPanel Spacing="4">
+      <TextBlock Style="{StaticResource EyebrowText}" Text="PHASE 4 — INTERACTIONS" />
+      <TextBlock Style="{StaticResource BodySmallText}" TextWrapping="Wrap"
+                 Foreground="{ThemeResource Ink3Brush}"
+                 Text="Six state visuals per page, offline banner" />
+    </StackPanel>
+    <StackPanel Spacing="4">
+      <TextBlock Style="{StaticResource EyebrowText}" Text="PHASE 5 — POLISH" />
+      <TextBlock Style="{StaticResource BodySmallText}" TextWrapping="Wrap"
+                 Foreground="{ThemeResource Ink3Brush}"
+                 Text="Tokens applied, type rhythm settled" />
+    </StackPanel>
+    <StackPanel Spacing="4">
+      <TextBlock Style="{StaticResource EyebrowText}" Text="PHASE 6 — TESTS + A11Y" />
+      <TextBlock Style="{StaticResource BodySmallText}" TextWrapping="Wrap"
+                 Foreground="{ThemeResource Ink3Brush}"
+                 Text="Smoke tests, accessibility audit, screen-reader sweep" />
+    </StackPanel>
+  </StackPanel>
+</UserControl>
