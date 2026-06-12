@@ -394,6 +394,7 @@
                   <TextBox x:Name="EditModeTextBox"
                            Visibility="Collapsed"
                            TextChanged="OnEditModeTextChanged"
+                           PlaceholderText="# Write or paste markdown to override the generated file…"
                            AcceptsReturn="True"
                            TextWrapping="Wrap"
                            MinHeight="320"

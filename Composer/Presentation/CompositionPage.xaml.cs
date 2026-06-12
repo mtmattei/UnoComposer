@@ -124,6 +124,9 @@ public sealed partial class CompositionPage : Page
             RunLayerTransition();
             RunLeftRailDotTravel(previousIndex, idx);
             RunRightRailDotTransition(idx);
+            // Settle the rail preview alongside the canvas so the two sides
+            // move together instead of the rail snapping to new content.
+            Motion.RunSettle(OverrideMarkdownView, fromY: 4, durationMs: 320);
             ScrollToTop();
         }
         if (indexChanged || previewChanged)

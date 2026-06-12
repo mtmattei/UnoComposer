@@ -49,10 +49,11 @@
                       Spacing="8"
                       VerticalAlignment="Center" />
         </StackPanel>
-        <TextBlock Grid.Column="1"
+        <TextBlock x:Name="SubmitHintText"
+                   Grid.Column="1"
                    Style="{StaticResource EyebrowText}"
                    Foreground="{ThemeResource Ink4Brush}"
-                   Text="⌘↵ TO SUBMIT"
+                   Text="CTRL+↵ TO SUBMIT"
                    VerticalAlignment="Center" />
       </Grid>
 

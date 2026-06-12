@@ -51,9 +51,9 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="#B04534" Text="P1" />
+        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="{ThemeResource WarnBrush}" Text="P1" />
         <StackPanel Grid.Column="1" Spacing="4">
-          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="#B04534" Text="SCAFFOLD" />
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="{ThemeResource WarnBrush}" Text="SCAFFOLD" />
           <TextBlock Style="{StaticResource LabelLargeText}" Text="Solution skeleton" />
         </StackPanel>
         <StackPanel Grid.Column="2" Spacing="6">
@@ -73,9 +73,9 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="#3D6F9A" Text="P2" />
+        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="{ThemeResource InfoBrush}" Text="P2" />
         <StackPanel Grid.Column="1" Spacing="4">
-          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="#3D6F9A" Text="SHELL" />
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="{ThemeResource InfoBrush}" Text="SHELL" />
           <TextBlock Style="{StaticResource LabelLargeText}" Text="Shell &amp; navigation" />
         </StackPanel>
         <StackPanel Grid.Column="2" Spacing="6">
@@ -95,9 +95,9 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="#7D4FA0" Text="P3" />
+        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="{ThemeResource TagBrush}" Text="P3" />
         <StackPanel Grid.Column="1" Spacing="4">
-          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="#7D4FA0" Text="DOMAIN" />
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="{ThemeResource TagBrush}" Text="DOMAIN" />
           <TextBlock Style="{StaticResource LabelLargeText}" Text="Models &amp; feeds" />
         </StackPanel>
         <StackPanel Grid.Column="2" Spacing="6">
@@ -117,9 +117,9 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="#D45F8F" Text="P4" />
+        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="{ThemeResource AccentPinkBrush}" Text="P4" />
         <StackPanel Grid.Column="1" Spacing="4">
-          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="#D45F8F" Text="SCREENS" />
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="{ThemeResource AccentPinkBrush}" Text="SCREENS" />
           <TextBlock Style="{StaticResource LabelLargeText}" Text="Screens &amp; bindings" />
         </StackPanel>
         <StackPanel Grid.Column="2" Spacing="6">
@@ -139,9 +139,9 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="#6F8068" Text="P5" />
+        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="{ThemeResource SuccessBrush}" Text="P5" />
         <StackPanel Grid.Column="1" Spacing="4">
-          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="#6F8068" Text="STATES" />
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="{ThemeResource SuccessBrush}" Text="STATES" />
           <TextBlock Style="{StaticResource LabelLargeText}" Text="Interaction states" />
         </StackPanel>
         <StackPanel Grid.Column="2" Spacing="6">
@@ -161,9 +161,9 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="#2F6F68" Text="P6" />
+        <TextBlock Style="{StaticResource MonoLabelText}" Foreground="{ThemeResource ActionBrush}" Text="P6" />
         <StackPanel Grid.Column="1" Spacing="4">
-          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="#2F6F68" Text="POLISH" />
+          <TextBlock Style="{StaticResource EyebrowTinyText}" Foreground="{ThemeResource ActionBrush}" Text="POLISH" />
           <TextBlock Style="{StaticResource LabelLargeText}" Text="Tests &amp; accessibility" />
         </StackPanel>
         <StackPanel Grid.Column="2" Spacing="6">

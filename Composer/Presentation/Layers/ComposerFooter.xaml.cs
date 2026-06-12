@@ -45,6 +45,9 @@ public sealed partial class ComposerFooter : UserControl
         this.DataContextChanged += OnDataContextChanged;
         this.Loaded += OnLoaded;
         this.Unloaded += OnUnloaded;
+
+        if (OperatingSystem.IsMacOS())
+            SubmitHintText.Text = "⌘↵ TO SUBMIT";
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
@@ -345,18 +348,29 @@ public sealed partial class ComposerFooter : UserControl
 
         if (isIntent)
         {
-            ContinueBtn.Visibility = Visibility.Collapsed;
-            GenerateBtn.Visibility = Visibility.Visible;
-            AcceptBtn.Visibility   = hasOverview || state == LayerState.Previewing ? Visibility.Visible : Visibility.Collapsed;
-            DiscardBtn.Visibility  = state != LayerState.Clean ? Visibility.Visible : Visibility.Collapsed;
+            SetCtaVisibility(ContinueBtn, false);
+            SetCtaVisibility(GenerateBtn, true);
+            SetCtaVisibility(AcceptBtn,   hasOverview || state == LayerState.Previewing);
+            SetCtaVisibility(DiscardBtn,  state != LayerState.Clean);
         }
         else
         {
-            ContinueBtn.Visibility = state == LayerState.Clean      ? Visibility.Visible : Visibility.Collapsed;
-            GenerateBtn.Visibility = state is LayerState.Dirty or LayerState.Previewing ? Visibility.Visible : Visibility.Collapsed;
-            AcceptBtn.Visibility   = state == LayerState.Previewing ? Visibility.Visible : Visibility.Collapsed;
-            DiscardBtn.Visibility  = state != LayerState.Clean      ? Visibility.Visible : Visibility.Collapsed;
+            SetCtaVisibility(ContinueBtn, state == LayerState.Clean);
+            SetCtaVisibility(GenerateBtn, state is LayerState.Dirty or LayerState.Previewing);
+            SetCtaVisibility(AcceptBtn,   state == LayerState.Previewing);
+            SetCtaVisibility(DiscardBtn,  state != LayerState.Clean);
         }
+    }
+
+    // CTA buttons used to snap in via raw Visibility flips; settle newly shown
+    // buttons so the footer swap reads as one motion with the rest of the app.
+    private static void SetCtaVisibility(Button btn, bool visible)
+    {
+        var target = visible ? Visibility.Visible : Visibility.Collapsed;
+        if (btn.Visibility == target) return;
+        btn.Visibility = target;
+        if (visible)
+            Motion.RunSettle(btn, fromY: 4, durationMs: 200);
     }
 
     private void ApplyCommandExecutingState(string? layerId, LayerState state, bool hasOverview)

@@ -21,6 +21,7 @@
       <SolidColorBrush x:Key="SuccessBrush" Color="#6F8068" />
       <SolidColorBrush x:Key="WarnBrush" Color="#B04534" />
       <SolidColorBrush x:Key="TagBrush" Color="#7D4FA0" />
+      <SolidColorBrush x:Key="AccentPinkBrush" Color="#D45F8F" />
 
       <!-- Ink scale (body to placeholders) -->
       <SolidColorBrush x:Key="InkBrush" Color="#1A1A1A" />
@@ -59,6 +60,7 @@
       <SolidColorBrush x:Key="SuccessBrush" Color="#9BBF9D" />
       <SolidColorBrush x:Key="WarnBrush" Color="#E87F6D" />
       <SolidColorBrush x:Key="TagBrush" Color="#B288C4" />
+      <SolidColorBrush x:Key="AccentPinkBrush" Color="#E48FB4" />
 
       <SolidColorBrush x:Key="InkBrush" Color="#FAFAFA" />
       <SolidColorBrush x:Key="Ink2Brush" Color="#CFCFCF" />
