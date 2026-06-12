@@ -1,18 +1,14 @@
 <UserControl x:Class="Composer.Presentation.Controls.MarkdownPreviewer"
              x:Name="Root"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <ScrollViewer VerticalScrollBarVisibility="Auto"
                 HorizontalScrollMode="Disabled"
                 HorizontalScrollBarVisibility="Disabled">
-    <ct:MarkdownTextBlock x:Name="MarkdownBlock"
-                          Text="{Binding Markdown, ElementName=Root}"
-                          FontFamily="{StaticResource BodyFontFamily}"
-                          FontSize="13"
-                          Foreground="{ThemeResource Ink2Brush}"
-                          Padding="0,4,0,4" />
+    <StackPanel x:Name="MarkdownStack"
+                Spacing="8"
+                Padding="0,4,0,4" />
   </ScrollViewer>
 
 </UserControl>

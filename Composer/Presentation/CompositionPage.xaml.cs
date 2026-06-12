@@ -108,7 +108,7 @@ public sealed partial class CompositionPage : Page
         var indexChanged = idx != _lastSeenIndex;
         var isPreview = ReadIsPreviewMode() ?? true;
         var overrideMarkdown = ReadOverrideMarkdown();
-        var generatedSignature = idx is 2 or 3 && isPreview && string.IsNullOrEmpty(overrideMarkdown)
+        var generatedSignature = isPreview && string.IsNullOrEmpty(overrideMarkdown)
             ? BuildSnapshotSignature(BuildSnapshotFromProxy())
             : null;
         var previewChanged = _lastSeenPreviewMode != isPreview
@@ -209,24 +209,19 @@ public sealed partial class CompositionPage : Page
     {
         var overrideMarkdown = ReadOverrideMarkdown();
         var hasOverride = !string.IsNullOrEmpty(overrideMarkdown);
-        var useMarkdownPreview = hasOverride || idx is 2 or 3;
         var markdown = hasOverride
             ? overrideMarkdown
-            : idx == 2
-                ? GetGeneratedMarkdown("architecture")
-                : idx == 3
-                    ? GetGeneratedMarkdown("design")
-                : null;
+            : GetGeneratedMarkdown(LayerIdAt(idx));
 
-        SetLayerVisibility(Preview0, !useMarkdownPreview && idx == 0);
-        SetLayerVisibility(Preview1, !useMarkdownPreview && idx == 1);
-        SetLayerVisibility(Preview4, !useMarkdownPreview && idx == 4);
-        SetLayerVisibility(Preview5, !useMarkdownPreview && idx == 5);
-        SetLayerVisibility(Preview6, !useMarkdownPreview && idx == 6);
-        SetLayerVisibility(Preview7, !useMarkdownPreview && idx == 7);
+        SetLayerVisibility(Preview0, false);
+        SetLayerVisibility(Preview1, false);
+        SetLayerVisibility(Preview4, false);
+        SetLayerVisibility(Preview5, false);
+        SetLayerVisibility(Preview6, false);
+        SetLayerVisibility(Preview7, false);
 
-        SetLayerVisibility(OverrideMarkdownView, useMarkdownPreview);
-        if (useMarkdownPreview && !string.Equals(OverrideMarkdownView.Markdown, markdown, StringComparison.Ordinal))
+        SetLayerVisibility(OverrideMarkdownView, true);
+        if (!string.Equals(OverrideMarkdownView.Markdown, markdown, StringComparison.Ordinal))
             OverrideMarkdownView.Markdown = markdown;
     }
 
