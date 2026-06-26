@@ -27,6 +27,11 @@ public sealed partial class MarkdownPreviewer : UserControl
         set => SetValue(MarkdownProperty, value);
     }
 
+    // Memoization keys for SyncMarkdown — skip the full visual-tree rebuild when
+    // neither the source markdown nor the theme has changed since the last render.
+    private string? _renderedMarkdown;
+    private ElementTheme? _renderedTheme;
+
     public MarkdownPreviewer()
     {
         this.InitializeComponent();
@@ -44,9 +49,19 @@ public sealed partial class MarkdownPreviewer : UserControl
     {
         if (MarkdownStack is null) return;
 
+        var markdown = Markdown ?? string.Empty;
+        // Skip the Children.Clear() + full rebuild when neither the markdown nor
+        // the theme changed since the last render. Callers already guard same-
+        // content Markdown sets, but Loaded / ActualThemeChanged can re-enter
+        // with identical inputs (e.g. control reloaded during navigation).
+        if (string.Equals(_renderedMarkdown, markdown, StringComparison.Ordinal) &&
+            _renderedTheme == ActualTheme)
+            return;
+        _renderedMarkdown = markdown;
+        _renderedTheme = ActualTheme;
+
         MarkdownStack.Children.Clear();
 
-        var markdown = Markdown ?? string.Empty;
         var lines = markdown.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
         var paragraph = new List<string>();
         var code = new List<string>();

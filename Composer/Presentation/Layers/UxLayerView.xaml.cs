@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using Microsoft.UI.Xaml;
 using Composer.Models;
 using Composer.Presentation.Controls;
@@ -66,11 +69,21 @@ public sealed partial class UxLayerView : UserControl
         });
     }
 
+    // The UX flow markdown emits one screen per line as "N. **Label** — Caption".
+    // Parsed back out so prompt refinements (which rewrite the markdown) are
+    // reflected in the canvas cards, not just the right-rail file view.
+    private static readonly Regex ScreenLineRegex =
+        new(@"^\s*\d+\.\s+\*\*(?<label>.+?)\*\*\s*[—–-]\s*(?<cap>.+?)\s*$", RegexOptions.Multiline);
+
     private void RefreshFlow()
     {
         var intent = ReadIntent() ?? Intent.Example;
         var ctx = IntentContext.DeriveFrom(intent);
-        var screens = ctx.ScreenFlow;
+
+        // Prefer the refined override markdown so prompt edits like "add a
+        // settings page" change the visible flow; fall back to the intent-
+        // derived ScreenFlow when this layer hasn't been refined yet.
+        var screens = ParseRefinedScreens() ?? ctx.ScreenFlow;
 
         SetCard(Card0Title, Card0Caption, screens, 0);
         SetCard(Card1Title, Card1Caption, screens, 1);
@@ -80,6 +93,30 @@ public sealed partial class UxLayerView : UserControl
 
         FilenameText.Text     = ctx.UxFlowFilename;
         FlowSummaryText.Text  = $"Five screens for the primary {ctx.EntityNoun} flow. Arrows show sequence.";
+    }
+
+    // Reads the active UX layer's refined override markdown (if any) and parses
+    // the screen list. Returns null when this layer has no override yet or the
+    // markdown doesn't contain a recognizable screen list — caller then falls
+    // back to the intent-derived ScreenFlow.
+    private ImmutableArray<UxScreen>? ParseRefinedScreens()
+    {
+        var active = ProxyReader.Read<LayerStatus>((object?)_bindable ?? this.DataContext, "ActiveLayer");
+        if (active is null || !string.Equals(active.Id, "ux", StringComparison.Ordinal))
+            return null;
+
+        var md = active.OverrideMarkdown;
+        if (string.IsNullOrWhiteSpace(md))
+            return null;
+
+        var matches = ScreenLineRegex.Matches(md);
+        if (matches.Count == 0)
+            return null;
+
+        var builder = ImmutableArray.CreateBuilder<UxScreen>();
+        foreach (Match m in matches)
+            builder.Add(new UxScreen(m.Groups["label"].Value.Trim(), m.Groups["cap"].Value.Trim()));
+        return builder.ToImmutable();
     }
 
     private static void SetCard(TextBlock titleBlock, TextBlock captionBlock, System.Collections.Immutable.ImmutableArray<UxScreen> flow, int idx)

@@ -46,9 +46,10 @@
 
     <!-- 5-card horizontal scroller — eyebrow + caption per card are populated
          in code-behind from IntentContext.ScreenFlow (vibe-aware). Skeleton
-         bars stay decorative. Scrollbar is now Auto so the 5th card is
-         reachable when the notepad is narrower than the card row. -->
-    <ScrollViewer HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+         bars stay decorative. Scrollbar is Hidden (not Disabled) so the bar
+         doesn't show but wheel/drag scroll still reaches the 5th card when the
+         notepad is narrower than the card row. -->
+    <ScrollViewer HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden"
                   VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled">
       <StackPanel Orientation="Horizontal" Spacing="14">
         <Border Background="{ThemeResource NotepadSurfaceBrush}"

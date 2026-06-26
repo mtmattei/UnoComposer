@@ -381,12 +381,16 @@
                 <Grid>
                   <Grid x:Name="PreviewModeHost" Visibility="Visible">
                     <Grid x:Name="StructuredPreviewHost">
-                      <previewers:IntentPreviewer        x:Name="Preview0" Visibility="Visible" />
-                      <previewers:UxPreviewer            x:Name="Preview1" Visibility="Collapsed" />
-                      <previewers:InteractionsPreviewer  x:Name="Preview4" Visibility="Collapsed" />
-                      <previewers:DataPreviewer          x:Name="Preview5" Visibility="Collapsed" />
-                      <previewers:ImplementationPreviewer x:Name="Preview6" Visibility="Collapsed" />
-                      <previewers:ScaffoldPreviewer      x:Name="Preview7" Visibility="Collapsed" />
+                      <!-- Structured per-layer previewers are superseded by OverrideMarkdownView
+                           (all layers now route through the markdown preview). Kept for reference
+                           but x:Load=False so they never instantiate — realize on demand only if
+                           the structured-preview path is ever re-enabled. -->
+                      <previewers:IntentPreviewer         x:Name="Preview0" x:Load="False" />
+                      <previewers:UxPreviewer             x:Name="Preview1" x:Load="False" />
+                      <previewers:InteractionsPreviewer   x:Name="Preview4" x:Load="False" />
+                      <previewers:DataPreviewer           x:Name="Preview5" x:Load="False" />
+                      <previewers:ImplementationPreviewer x:Name="Preview6" x:Load="False" />
+                      <previewers:ScaffoldPreviewer       x:Name="Preview7" x:Load="False" />
                     </Grid>
                     <controls:MarkdownPreviewer x:Name="OverrideMarkdownView" Visibility="Collapsed" />
                   </Grid>

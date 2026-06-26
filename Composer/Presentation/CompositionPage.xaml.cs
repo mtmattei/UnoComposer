@@ -33,6 +33,7 @@ public sealed partial class CompositionPage : Page
     private bool? _lastSeenPreviewMode;
     private string? _lastSeenOverrideMarkdown;
     private string? _lastSeenGeneratedMarkdownSignature;
+    private int _lastSeenRevision = int.MinValue;
     private string? _generatedMarkdownLayerId;
     private string? _generatedMarkdownSignature;
     private string? _generatedMarkdown;
@@ -108,9 +109,32 @@ public sealed partial class CompositionPage : Page
         var indexChanged = idx != _lastSeenIndex;
         var isPreview = ReadIsPreviewMode() ?? true;
         var overrideMarkdown = ReadOverrideMarkdown();
-        var generatedSignature = isPreview && string.IsNullOrEmpty(overrideMarkdown)
-            ? BuildSnapshotSignature(BuildSnapshotFromProxy())
-            : null;
+
+        // The generated-markdown signature can only change when a composition
+        // input changes — and every such mutation bumps CompositionRevision.
+        // Reading the revision is one cheap int reflection read; only rebuild
+        // the expensive snapshot signature (9+ reflection reads + a join) when
+        // the revision, preview mode, or override state actually changed,
+        // instead of reflecting the whole snapshot on every 150ms tick.
+        var showsGenerated = isPreview && string.IsNullOrEmpty(overrideMarkdown);
+        var revision = ReadCompositionRevision();
+        string? generatedSignature;
+        if (!showsGenerated)
+        {
+            generatedSignature = null;
+        }
+        else if (revision == _lastSeenRevision
+                 && _lastSeenPreviewMode == isPreview
+                 && string.Equals(_lastSeenOverrideMarkdown, overrideMarkdown, StringComparison.Ordinal)
+                 && _lastSeenGeneratedMarkdownSignature is not null)
+        {
+            generatedSignature = _lastSeenGeneratedMarkdownSignature; // nothing changed — reuse
+        }
+        else
+        {
+            generatedSignature = BuildSnapshotSignature(BuildSnapshotFromProxy());
+        }
+        _lastSeenRevision = revision;
         var previewChanged = _lastSeenPreviewMode != isPreview
             || !string.Equals(_lastSeenOverrideMarkdown, overrideMarkdown, StringComparison.Ordinal)
             || !string.Equals(_lastSeenGeneratedMarkdownSignature, generatedSignature, StringComparison.Ordinal);
@@ -155,12 +179,15 @@ public sealed partial class CompositionPage : Page
             SeedEditTextBoxFromBuffer();
     }
 
+    private static readonly SolidColorBrush _transparentBrush =
+        new(Microsoft.UI.Colors.Transparent);
+
     private void ApplyPillSelection(bool isPreview)
     {
         var inkBrush     = (Brush)Application.Current.Resources["InkBrush"];
         var ink2Brush    = (Brush)Application.Current.Resources["Ink2Brush"];
         var surfaceBrush = (Brush)Application.Current.Resources["NotepadSurfaceBrush"];
-        var transparent  = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+        var transparent  = _transparentBrush;
 
         PreviewPill.Background     = isPreview ? inkBrush     : transparent;
         PreviewPillText.Foreground = isPreview ? surfaceBrush : ink2Brush;
@@ -195,6 +222,9 @@ public sealed partial class CompositionPage : Page
     private bool? ReadIsPreviewMode()
         => ProxyReader.ReadValue<bool>((object?)_bindable ?? this.DataContext, "IsPreviewMode");
 
+    private int ReadCompositionRevision()
+        => ProxyReader.ReadValue<int>((object?)_bindable ?? this.DataContext, "CompositionRevision") ?? 0;
+
     private string? ReadEditBuffer()
         => ProxyReader.Read<string>((object?)_bindable ?? this.DataContext, "EditBuffer");
 
@@ -216,13 +246,8 @@ public sealed partial class CompositionPage : Page
             ? overrideMarkdown
             : GetGeneratedMarkdown(LayerIdAt(idx));
 
-        SetLayerVisibility(Preview0, false);
-        SetLayerVisibility(Preview1, false);
-        SetLayerVisibility(Preview4, false);
-        SetLayerVisibility(Preview5, false);
-        SetLayerVisibility(Preview6, false);
-        SetLayerVisibility(Preview7, false);
-
+        // Preview0..7 are x:Load=False (deferred, never instantiated) — the
+        // single OverrideMarkdownView renders every layer. Nothing to collapse.
         SetLayerVisibility(OverrideMarkdownView, true);
         if (!string.Equals(OverrideMarkdownView.Markdown, markdown, StringComparison.Ordinal))
             OverrideMarkdownView.Markdown = markdown;
@@ -455,10 +480,19 @@ public sealed partial class CompositionPage : Page
     }
 
     private void OnRailItemPointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
-        => TweenRailHover(sender as FrameworkElement, 5.0, 0.10, 1.0);
+    {
+        // Direct, guaranteed-visible row tint (matches the pill hover pattern) —
+        // the teal RailHoverSurface tween is subtle at 0.10 and depends on a
+        // transform lookup that can no-op. The background tint always shows.
+        if (sender is Border b) b.Background = (Brush)Application.Current.Resources["HairlineBrush"];
+        TweenRailHover(sender as FrameworkElement, 5.0, 0.10, 1.0);
+    }
 
     private void OnRailItemPointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
-        => TweenRailHover(sender as FrameworkElement, 0.0, 0.0, 0.985);
+    {
+        if (sender is Border b) b.Background = _transparentBrush;
+        TweenRailHover(sender as FrameworkElement, 0.0, 0.0, 0.985);
+    }
 
     private void TweenRailHover(FrameworkElement? row, double targetX, double targetOpacity, double targetScale)
     {
